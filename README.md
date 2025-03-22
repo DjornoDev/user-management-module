@@ -62,11 +62,14 @@ Welcome to the future of academic admissions! The BIT Admission Portal revolutio
    ```bash
    git clone https://github.com/your-org/bit-admission-portal.git
 2. Install Dependencies
+    ```bash
     composer install
     npm install
 3. Configure environment
+    ```bash
     cp .env.example .env
 4. Start development server
+    ```bash
     composer run dev
 
 ### Technology Stack
