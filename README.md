@@ -86,7 +86,7 @@ The **BIT Admission Portal** revolutionizes how Baliwag Institute of Technology 
    DB_CONNECTION=mysql
    DB_HOST=127.0.0.1
    DB_PORT=3306
-   DB_DATABASE=bit_admissions
+   DB_DATABASE=user_management_module
    DB_USERNAME=root
    DB_PASSWORD=
    ```
