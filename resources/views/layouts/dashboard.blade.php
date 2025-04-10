@@ -52,6 +52,19 @@
         .sort-icon {
             transition: transform 0.3s ease;
         }
+
+        /* Profile Dropdown Styles */
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            z-index: 50;
+        }
+
+        .profile-dropdown.show {
+            display: block;
+        }
     </style>
 </head>
 
@@ -70,21 +83,21 @@
                 </div>
             </div>
 
-            <!-- Navigation Links -->
+            <!-- Sidebar Navigation Links -->
             <div class="flex-grow py-4">
                 <nav>
                     <a href="{{ route('dashboard') }}"
                         class="nav-item flex items-center px-6 py-3 
                         @dashboardActive
-                        text-gray-700 bg-green-100 border-r-4 border-green-400 border-primary
-                        @else
-                        text-gray-600 hover:bg-gray-100
-                        @enddashboardActive 
+text-gray-700 bg-green-100 border-r-4 border-green-400 border-primary
+@else
+text-gray-600 hover:bg-gray-100
+@enddashboardActive 
                         relative">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="nav-icon h-6 w-6 mr-3 @dashboardActive
-                                text-primary
-                                @enddashboardActive"
+text-primary
+@enddashboardActive"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6z" />
@@ -100,26 +113,28 @@
                             class="tooltip bg-gray-800 text-white text-xs px-2 py-1 rounded absolute left-16 ml-2">Dashboard</span>
                     </a>
 
-                    <a href="{{ route('profile.edit') }}"
-                        class="nav-item flex items-center px-6 py-3
-                        @profileActive
-                        text-gray-700 bg-green-100 border-r-4 border-green-400 border-primary
-                        @else
-                        text-gray-600 hover:bg-gray-100
-                        @endprofileActive
-                        relative">
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="nav-item flex items-center px-6 py-3 
+        @userManagementActive
+text-gray-700 bg-green-100 border-r-4 border-green-400 border-primary
+@else
+text-gray-600 hover:bg-gray-100
+@enduserManagementActive 
+        relative">
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            class="nav-icon h-6 w-6 mr-3 @profileActive
-                        text-primary
-                        @endprofileActive"
+                            class="nav-icon h-6 w-6 mr-3 @userManagementActive
+text-primary
+@enduserManagementActive"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
-                        <span class="nav-text">Profile</span>
-                        <span
-                            class="tooltip bg-gray-800 text-white text-xs px-2 py-1 rounded absolute left-16 ml-2">Profile</span>
+                        <span class="nav-text">User Management</span>
+                        <span class="tooltip bg-gray-800 text-white text-xs px-2 py-1 rounded absolute left-16 ml-2">
+                            User Management
+                        </span>
                     </a>
+
                     <a href="#"
                         class="nav-item flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 relative">
                         <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon h-6 w-6 mr-3" fill="none"
@@ -157,24 +172,6 @@
                     </a>
                 </nav>
             </div>
-
-            <!-- Logout -->
-            <div class="p-4 border-t border-gray-200">
-                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                    class="nav-item flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 rounded-md relative">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon h-6 w-6 mr-3 text-red-500" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                    </svg>
-                    <span class="nav-text">Logout</span>
-                    <span
-                        class="tooltip bg-gray-800 text-white text-xs px-2 py-1 rounded absolute left-16 ml-2">Logout</span>
-                </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
-                    @csrf
-                </form>
-            </div>
         </div>
 
         <!-- Main Content -->
@@ -191,15 +188,56 @@
                         </svg>
                     </button>
 
-                    <!-- User Profile -->
-                    <div class="flex items-center space-x-4">
-                        <div class="text-right">
-                            <p class="text-sm font-medium text-gray-700">{{ auth()->user()->full_name }}</p>
-                            <p class="text-xs text-gray-500">{{ auth()->user()->role->role_name }}</p>
+                    <!-- User Profile with Dropdown -->
+                    <div class="relative">
+                        <div class="flex items-center space-x-4 cursor-pointer" id="profile-trigger">
+                            <div class="text-right">
+                                <p class="text-sm font-medium text-gray-700">{{ auth()->user()->full_name }}</p>
+                                <p class="text-xs text-gray-500">{{ auth()->user()->role->role_name }}</p>
+                            </div>
+                            <div class="h-10 w-10 rounded-full overflow-hidden border-2 border-primary">
+                                <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/default-profile.jpg') }}"
+                                    alt="User Profile" class="h-full w-full object-cover">
+                            </div>
+                            <!-- Dropdown Indicator -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clip-rule="evenodd" />
+                            </svg>
                         </div>
-                        <div class="h-10 w-10 rounded-full overflow-hidden border-2 border-primary">
-                            <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/default-profile.jpg') }}"
-                                alt="User Profile" class="h-full w-full object-cover">
+
+                        <!-- Profile Dropdown Menu -->
+                        <div
+                            class="profile-dropdown mt-2 w-48 bg-white rounded-md shadow-lg py-1 border border-gray-200">
+                            <a href="{{ route('profile.edit') }}"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-500"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                    <span>Profile</span>
+                                </div>
+                            </a>
+                            <div class="border-t border-gray-100"></div>
+                            <a href="#"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-red-500"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                    </svg>
+                                    <span>Logout</span>
+                                </div>
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                                @csrf
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -214,39 +252,91 @@
     </div>
 
     <script>
-        // Sidebar Toggle Functionality
-        document.getElementById('toggle-sidebar').addEventListener('click', function() {
+        // Sidebar Toggle Functionality with LocalStorage
+        document.addEventListener('DOMContentLoaded', function() {
             const sidebar = document.getElementById('sidebar');
             const logoFull = document.getElementById('logo-full');
             const logoIcon = document.getElementById('logo-icon');
             const navTexts = document.querySelectorAll('.nav-text');
+            const toggleSidebarBtn = document.getElementById('toggle-sidebar');
 
-            // Toggle sidebar width
-            sidebar.classList.toggle('sidebar-expanded');
-            sidebar.classList.toggle('sidebar-collapsed');
+            // Function to apply sidebar state
+            function applySidebarState() {
+                const isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
 
-            // Toggle logo
-            logoFull.classList.toggle('hidden');
-            logoIcon.classList.toggle('hidden');
+                if (isSidebarCollapsed) {
+                    // Collapse sidebar
+                    sidebar.classList.remove('sidebar-expanded');
+                    sidebar.classList.add('sidebar-collapsed');
 
-            // Toggle nav text visibility
-            navTexts.forEach(text => {
-                text.classList.toggle('hidden');
+                    logoFull.classList.add('hidden');
+                    logoIcon.classList.remove('hidden');
+
+                    navTexts.forEach(text => {
+                        text.classList.add('hidden');
+                    });
+
+                    const navItems = document.querySelectorAll('.nav-item');
+                    navItems.forEach(item => {
+                        item.classList.remove('px-6');
+                        item.classList.add('px-4', 'justify-center');
+                    });
+                }
+            }
+
+            // Initial state application
+            applySidebarState();
+
+            // Toggle sidebar functionality
+            toggleSidebarBtn.addEventListener('click', function() {
+                // Toggle sidebar width
+                sidebar.classList.toggle('sidebar-expanded');
+                sidebar.classList.toggle('sidebar-collapsed');
+
+                // Toggle logo
+                logoFull.classList.toggle('hidden');
+                logoIcon.classList.toggle('hidden');
+
+                // Toggle nav text visibility
+                navTexts.forEach(text => {
+                    text.classList.toggle('hidden');
+                });
+
+                // Center icons when collapsed
+                const navItems = document.querySelectorAll('.nav-item');
+                if (sidebar.classList.contains('sidebar-collapsed')) {
+                    // Save collapsed state to localStorage
+                    localStorage.setItem('sidebarCollapsed', 'true');
+
+                    navItems.forEach(item => {
+                        item.classList.remove('px-6');
+                        item.classList.add('px-4', 'justify-center');
+                    });
+                } else {
+                    // Remove collapsed state from localStorage
+                    localStorage.removeItem('sidebarCollapsed');
+
+                    navItems.forEach(item => {
+                        item.classList.remove('px-4', 'justify-center');
+                        item.classList.add('px-6');
+                    });
+                }
             });
 
-            // Center icons when collapsed
-            const navItems = document.querySelectorAll('.nav-item');
-            if (sidebar.classList.contains('sidebar-collapsed')) {
-                navItems.forEach(item => {
-                    item.classList.remove('px-6');
-                    item.classList.add('px-4', 'justify-center');
-                });
-            } else {
-                navItems.forEach(item => {
-                    item.classList.remove('px-4', 'justify-center');
-                    item.classList.add('px-6');
-                });
-            }
+            // Profile Dropdown Toggle
+            const profileTrigger = document.getElementById('profile-trigger');
+            const profileDropdown = document.querySelector('.profile-dropdown');
+
+            profileTrigger.addEventListener('click', function() {
+                profileDropdown.classList.toggle('show');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!profileTrigger.contains(event.target) && !profileDropdown.contains(event.target)) {
+                    profileDropdown.classList.remove('show');
+                }
+            });
         });
     </script>
     <script src="{{ asset('js/modal-handler.js') }}"></script>

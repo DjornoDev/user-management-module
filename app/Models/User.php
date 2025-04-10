@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Role;
+use App\Enums\ExtensionName;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -31,17 +32,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'role_id',
         'status',
         'profile_picture',
-        'date_of_birth',
-        'place_of_birth',
-        'sex',
-        'age',
-        'citizenship',
-        'address',
-        'blood_type',
-        'civil_status',
-        'religion',
-        'birth_order',
-        'no_of_siblings',
         'last_login'
     ];
 
@@ -66,7 +56,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'last_login' => 'datetime',
-            'date_of_birth' => 'date:Y-m-d',
+            'extension_name' => ExtensionName::class,
         ];
     }
 
@@ -122,7 +112,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $fullName .= ' ' . $this->last_name;
 
         if ($this->extension_name) {
-            $fullName .= ', ' . $this->extension_name;
+            $fullName .= ', ' . $this->extension_name->value;
         }
 
         return $fullName;

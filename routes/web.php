@@ -16,9 +16,9 @@ require __DIR__ . '/auth.php';
 
 // Authenticated + Verified Email Routes
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Common Dashboard Redirect
+    // Change this route
     Route::get('/dashboard', function () {
-        return redirect(auth()->user()->getRedirectPath());
+        return view('dashboard'); // Instead of redirect
     })->name('dashboard');
 
     // Profile Management
@@ -40,7 +40,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/admin-dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');
         Route::get('/users/data', [UserController::class, 'getUsersData'])->name('users.data');
 
-        // Add the audit logs route
+        // Audit Logs routes
         Route::get('/audit-logs', [UserController::class, 'auditLogs'])->name('admin.audit-logs');
 
         Route::resource('users', UserController::class);

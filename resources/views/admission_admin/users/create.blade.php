@@ -76,43 +76,15 @@
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Extension Name</label>
-                                    <input type="text" name="extension_name" value="{{ old('extension_name') }}"
+                                    <select name="extension_name"
                                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
-                                </div>
-                            </div>
-
-                            <!-- Demographic Information -->
-                            <div class="space-y-4">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">Date of Birth</label>
-                                        <input type="date" id="date_of_birth" name="date_of_birth"
-                                            value="{{ old('date_of_birth') }}"
-                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-                                            onchange="calculateAge()">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">Age</label>
-                                        <input type="number" id="age" name="age" value="{{ old('age') }}"
-                                            readonly
-                                            class="mt-1 block w-full rounded-md border-gray-300 bg-gray-50 shadow-sm focus:border-green-500 focus:ring-green-500">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Place of Birth</label>
-                                    <input type="text" name="place_of_birth" value="{{ old('place_of_birth') }}"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Sex</label>
-                                    <select name="sex" id="sex"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-                                        onchange="calculateAge()">
-                                        <option value="">Select Gender</option>
-                                        <option value="male" {{ old('sex') == 'male' ? 'selected' : '' }}>Male</option>
-                                        <option value="female" {{ old('sex') == 'female' ? 'selected' : '' }}>Female
-                                        </option>
-                                        <option value="other" {{ old('sex') == 'other' ? 'selected' : '' }}>Other</option>
+                                        <option value="">Select Extension</option>
+                                        @foreach (App\Enums\ExtensionName::cases() as $extension)
+                                            <option value="{{ $extension->value }}"
+                                                {{ old('extension_name') == $extension->value ? 'selected' : '' }}>
+                                                {{ $extension->value }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -130,18 +102,6 @@
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Email *</label>
                                 <input type="email" name="email" value="{{ old('email') }}"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Password *</label>
-                                <input type="password" name="password"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Confirm Password *</label>
-                                <input type="password" name="password_confirmation"
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
                             </div>
 
@@ -186,80 +146,6 @@
                                 <input type="text" name="contact_number" value="{{ old('contact_number') }}"
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
                             </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Address</label>
-                                <textarea name="address" rows="2"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">{{ old('address') }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Additional Information Section -->
-                    <div class="mb-8 p-6 bg-white rounded-lg border border-gray-200 shadow-sm">
-                        <h3
-                            class="text-lg font-semibold text-green-700 flex items-center mb-4 pb-2 border-b border-gray-100">
-                            <i class="fas fa-info-circle text-green-500 mr-2"></i> Additional Information
-                        </h3>
-
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Civil Status</label>
-                                <select name="civil_status"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
-                                    <option value="">Select Civil Status</option>
-                                    <option value="Single" {{ old('civil_status') == 'Single' ? 'selected' : '' }}>Single
-                                    </option>
-                                    <option value="Married" {{ old('civil_status') == 'Married' ? 'selected' : '' }}>
-                                        Married</option>
-                                    <option value="Divorced" {{ old('civil_status') == 'Divorced' ? 'selected' : '' }}>
-                                        Divorced</option>
-                                    <option value="Widowed" {{ old('civil_status') == 'Widowed' ? 'selected' : '' }}>
-                                        Widowed</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Citizenship</label>
-                                <input type="text" name="citizenship" value="{{ old('citizenship') }}"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Blood Type</label>
-                                <select name="blood_type"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
-                                    <option value="">Select Blood Type</option>
-                                    <option value="A+" {{ old('blood_type') == 'A+' ? 'selected' : '' }}>A+</option>
-                                    <option value="A-" {{ old('blood_type') == 'A-' ? 'selected' : '' }}>A-</option>
-                                    <option value="B+" {{ old('blood_type') == 'B+' ? 'selected' : '' }}>B+</option>
-                                    <option value="B-" {{ old('blood_type') == 'B-' ? 'selected' : '' }}>B-</option>
-                                    <option value="AB+" {{ old('blood_type') == 'AB+' ? 'selected' : '' }}>AB+</option>
-                                    <option value="AB-" {{ old('blood_type') == 'AB-' ? 'selected' : '' }}>AB-</option>
-                                    <option value="O+" {{ old('blood_type') == 'O+' ? 'selected' : '' }}>O+</option>
-                                    <option value="O-" {{ old('blood_type') == 'O-' ? 'selected' : '' }}>O-</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Religion</label>
-                                <input type="text" name="religion" value="{{ old('religion') }}"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Birth Order</label>
-                                <input type="number" name="birth_order" value="{{ old('birth_order') }}"
-                                    min="0"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Number of Siblings</label>
-                                <input type="number" name="no_of_siblings" value="{{ old('no_of_siblings') }}"
-                                    min="0"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
-                            </div>
                         </div>
                     </div>
 
@@ -278,32 +164,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        // Auto-calculate age based on date of birth
-        function calculateAge() {
-            const dobInput = document.getElementById('date_of_birth');
-            const ageInput = document.getElementById('age');
-
-            if (dobInput.value) {
-                const dob = new Date(dobInput.value);
-                const today = new Date();
-                let age = today.getFullYear() - dob.getFullYear();
-                const monthDiff = today.getMonth() - dob.getMonth();
-
-                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
-                    age--;
-                }
-                ageInput.value = age;
-            } else {
-                ageInput.value = '';
-            }
-        }
-
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            calculateAge();
-            document.getElementById('date_of_birth').addEventListener('change', calculateAge);
-        });
-    </script>
 @endsection

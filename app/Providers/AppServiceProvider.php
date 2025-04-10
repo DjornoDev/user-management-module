@@ -22,13 +22,26 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Create a custom Blade directive for checking if dashboard route is active
+        // For dashboard
         Blade::directive('dashboardActive', function () {
-            return "<?php if(request()->routeIs('dashboard') || 
-                           request()->routeIs('student.dashboard') || 
-                           request()->routeIs('admin.dashboard') || 
-                           request()->routeIs('program_head.dashboard') || 
-                           request()->routeIs('faculty.dashboard')): ?>";
+            return "<?php if(request()->routeIs('dashboard') ||
+                   request()->routeIs('student.dashboard') ||
+                   request()->routeIs('program_head.dashboard') ||
+                   request()->routeIs('faculty.dashboard')): ?>";
+            // Remove admin.dashboard from this list
+        });
+
+        // For user management
+        Blade::directive('userManagementActive', function () {
+            return "<?php if(request()->routeIs('admin.dashboard') ||
+              request()->routeIs('users.*') ||
+              request()->routeIs('admin.audit-logs')): ?>";
+            // This can stay the same
+        });
+
+        // Add its ending directive
+        Blade::directive('enduserManagementActive', function () {
+            return "<?php endif; ?>";
         });
 
         // Create ending directive for dashboard active

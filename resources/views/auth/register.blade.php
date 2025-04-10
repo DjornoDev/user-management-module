@@ -121,10 +121,16 @@
                                     <x-input-label for="extension_name" :value="__('Extension Name')"
                                         class="text-gray-700 font-medium" />
                                     <div class="relative mt-1">
-                                        <x-text-input id="extension_name"
-                                            class="pl-10 w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50"
-                                            type="text" name="extension_name" placeholder="Jr., Sr., III"
-                                            :value="old('extension_name')" />
+                                        <select id="extension_name" name="extension_name"
+                                            class="pl-10 w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50">
+                                            <option value="">Select Extension</option>
+                                            @foreach (App\Enums\ExtensionName::cases() as $extension)
+                                                <option value="{{ $extension->value }}"
+                                                    {{ old('extension_name') == $extension->value ? 'selected' : '' }}>
+                                                    {{ $extension->value }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                         <div
                                             class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                             <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"

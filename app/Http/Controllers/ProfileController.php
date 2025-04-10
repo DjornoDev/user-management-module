@@ -45,16 +45,6 @@ class ProfileController extends Controller
             'extension_name',
             'email',
             'contact_number',
-            'address',
-            'date_of_birth',
-            'sex',
-            'civil_status',
-            'citizenship',
-            'place_of_birth',
-            'blood_type',
-            'religion',
-            'birth_order',
-            'no_of_siblings'
         ];
         unset($validated['profile_picture']);
 

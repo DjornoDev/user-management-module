@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Enums\ExtensionName;
 
 return new class extends Migration
 {
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->string('first_name', 50);
             $table->string('last_name', 50);
             $table->string('middle_name', 50)->nullable();
-            $table->string('extension_name', 50)->nullable();
+            $table->enum('extension_name', ExtensionName::values())->nullable();
             
             //Contact Information
             $table->string('contact_number', 20);
@@ -29,19 +30,6 @@ return new class extends Migration
             // Role Management - Role and Status
             $table->unsignedInteger('role_id');
             $table->enum('status', ['active', 'inactive', 'pending'])->default('pending');
-            
-            // Student Applicant Fields
-            $table->date('date_of_birth')->nullable();
-            $table->string('place_of_birth')->nullable();
-            $table->enum('sex', ['male', 'female', 'other'])->nullable();
-            $table->integer('age')->nullable();
-            $table->string('citizenship')->nullable();
-            $table->text('address')->nullable();
-            $table->string('blood_type')->nullable();
-            $table->enum('civil_status', ['Married', 'Single', 'Divorced', 'Widowed'])->nullable();
-            $table->string('religion')->nullable();
-            $table->string('birth_order')->nullable();
-            $table->string('no_of_siblings')->nullable();
             
             // Common Fields
             $table->string('profile_picture')->nullable();

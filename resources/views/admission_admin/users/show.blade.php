@@ -88,13 +88,6 @@
                         </a>
                     </li>
                     <li class="mr-2">
-                        <a href="#demographic"
-                            class="inline-block py-2 px-4 text-gray-500 hover:text-green-600 font-medium hover:border-b-2 hover:border-green-600 rounded-t-lg"
-                            onclick="showTab('demographic'); return false;">
-                            <i class="fas fa-id-card mr-1"></i> Demographic
-                        </a>
-                    </li>
-                    <li class="mr-2">
                         <a href="#account"
                             class="inline-block py-2 px-4 text-gray-500 hover:text-green-600 font-medium hover:border-b-2 hover:border-green-600 rounded-t-lg"
                             onclick="showTab('account'); return false;">
@@ -107,7 +100,7 @@
                 <div class="tab-content">
                     <!-- Personal Information Tab -->
                     <div id="personal" class="tab-pane block">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="bg-gray-50 p-5 rounded-lg">
                                 <h3 class="text-lg font-semibold mb-4 text-green-700 flex items-center">
                                     <i class="fas fa-user-circle text-green-500 mr-2"></i> Basic Information
@@ -128,38 +121,6 @@
                                     <div class="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
                                         <p class="text-xs font-medium text-green-600 uppercase mb-1">Extension Name</p>
                                         <p class="text-gray-800">{{ $user->extension_name ?: 'N/A' }}</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-gray-50 p-5 rounded-lg">
-                                <h3 class="text-lg font-semibold mb-4 text-green-700 flex items-center">
-                                    <i class="fas fa-info-circle text-green-500 mr-2"></i> Additional Information
-                                </h3>
-                                <div class="space-y-4">
-                                    <div class="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
-                                        <p class="text-xs font-medium text-green-600 uppercase mb-1">Blood Type</p>
-                                        <p class="text-gray-800">{{ $user->blood_type ?: 'N/A' }}</p>
-                                    </div>
-                                    <div class="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
-                                        <p class="text-xs font-medium text-green-600 uppercase mb-1">Religion</p>
-                                        <p class="text-gray-800">{{ $user->religion ?: 'N/A' }}</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-gray-50 p-5 rounded-lg">
-                                <h3 class="text-lg font-semibold mb-4 text-green-700 flex items-center">
-                                    <i class="fas fa-users text-green-500 mr-2"></i> Family Information
-                                </h3>
-                                <div class="space-y-4">
-                                    <div class="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
-                                        <p class="text-xs font-medium text-green-600 uppercase mb-1">Birth Order</p>
-                                        <p class="text-gray-800">{{ $user->birth_order ?: 'N/A' }}</p>
-                                    </div>
-                                    <div class="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
-                                        <p class="text-xs font-medium text-green-600 uppercase mb-1">Number of Siblings</p>
-                                        <p class="text-gray-800">{{ $user->no_of_siblings ?: 'N/A' }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -186,50 +147,6 @@
                                         <i class="fas fa-phone text-gray-400 mr-2"></i>
                                         {{ $user->contact_number ?: 'N/A' }}
                                     </p>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg border border-gray-100 shadow-sm md:col-span-2">
-                                    <p class="text-xs font-medium text-green-600 uppercase mb-1">Complete Address</p>
-                                    <p class="text-gray-800 flex items-start">
-                                        <i class="fas fa-map-marker-alt text-gray-400 mr-2 mt-1"></i>
-                                        <span>{{ $user->address ?: 'No address provided' }}</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Demographic Information Tab -->
-                    <div id="demographic" class="tab-pane hidden">
-                        <div class="bg-gray-50 p-5 rounded-lg">
-                            <h3 class="text-lg font-semibold mb-4 text-green-700 flex items-center">
-                                <i class="fas fa-id-card text-green-500 mr-2"></i> Demographic Details
-                            </h3>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                                <div class="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
-                                    <p class="text-xs font-medium text-green-600 uppercase mb-1">Date of Birth</p>
-                                    <p class="text-gray-800">
-                                        {{ $user->date_of_birth ? $user->date_of_birth->format('F d, Y') : 'N/A' }}
-                                    </p>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
-                                    <p class="text-xs font-medium text-green-600 uppercase mb-1">Age</p>
-                                    <p class="text-gray-800">{{ $user->age ?: 'N/A' }}</p>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
-                                    <p class="text-xs font-medium text-green-600 uppercase mb-1">Sex</p>
-                                    <p class="text-gray-800">{{ $user->sex ?: 'N/A' }}</p>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
-                                    <p class="text-xs font-medium text-green-600 uppercase mb-1">Civil Status</p>
-                                    <p class="text-gray-800">{{ $user->civil_status ?: 'N/A' }}</p>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
-                                    <p class="text-xs font-medium text-green-600 uppercase mb-1">Citizenship</p>
-                                    <p class="text-gray-800">{{ $user->citizenship ?: 'N/A' }}</p>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
-                                    <p class="text-xs font-medium text-green-600 uppercase mb-1">Place of Birth</p>
-                                    <p class="text-gray-800">{{ $user->place_of_birth ?: 'N/A' }}</p>
                                 </div>
                             </div>
                         </div>

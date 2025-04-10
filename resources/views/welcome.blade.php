@@ -1,4 +1,4 @@
-<!-- resources/views/welcome.blade.php -->
+<!-- resources/views/welcome.blade.php - USER MANAGEMENT SYSTEM-->
 <!DOCTYPE html>
 <html lang="en">
 

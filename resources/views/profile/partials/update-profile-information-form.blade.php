@@ -73,9 +73,16 @@
 
                     <div>
                         <x-input-label for="extension_name" :value="__('Extension Name')" class="text-green-800" />
-                        <x-text-input id="extension_name" name="extension_name" type="text"
-                            class="mt-1 block w-full focus:border-green-500 focus:ring-green-500" :value="old('extension_name', $user->extension_name)"
-                            placeholder="Jr., Sr., III, etc." />
+                        <select id="extension_name" name="extension_name"
+                            class="mt-1 block w-full rounded-md border-gray-300 focus:border-green-500 focus:ring-green-500">
+                            <option value="">Select Extension</option>
+                            @foreach (App\Enums\ExtensionName::cases() as $extension)
+                                <option value="{{ $extension->value }}"
+                                    {{ old('extension_name', $user->extension_name?->value) == $extension->value ? 'selected' : '' }}>
+                                    {{ $extension->value }}
+                                </option>
+                            @endforeach
+                        </select>
                         <x-input-error class="mt-2" :messages="$errors->get('extension_name')" />
                     </div>
                 </div>
@@ -119,181 +126,6 @@
                             class="mt-1 block w-full focus:border-green-500 focus:ring-green-500" :value="old('contact_number', $user->contact_number)" />
                         <x-input-error class="mt-2" :messages="$errors->get('contact_number')" />
                     </div>
-
-                    <div>
-                        <x-input-label for="address" :value="__('Complete Address')" class="text-green-800" />
-                        <x-text-input id="address" name="address" type="text"
-                            class="mt-1 block w-full focus:border-green-500 focus:ring-green-500" :value="old('address', $user->address)" />
-                        <x-input-error class="mt-2" :messages="$errors->get('address')" />
-                    </div>
-                </div>
-            </div>
-
-            <!-- Personal Details -->
-            <div class="bg-white p-4 rounded-lg shadow-sm border border-green-100">
-                <h3 class="font-medium text-green-700 mb-4 border-b border-green-100 pb-2">Personal Details</h3>
-
-                <div class="space-y-4">
-                    <div>
-                        <x-input-label for="date_of_birth" :value="__('Date of Birth')" class="text-green-800" />
-                        <x-text-input id="date_of_birth" name="date_of_birth" type="date"
-                            class="mt-1 block w-full focus:border-green-500 focus:ring-green-500" :value="old(
-                                'date_of_birth',
-                                $user->date_of_birth
-                                    ? \Carbon\Carbon::parse($user->date_of_birth)->format('Y-m-d')
-                                    : null,
-                            )" />
-                        <x-input-error class="mt-2" :messages="$errors->get('date_of_birth')" />
-                    </div>
-
-                    <div>
-                        <x-input-label for="age" :value="__('Age')" class="text-green-800" />
-                        <x-text-input id="age" name="age" type="number"
-                            class="mt-1 block w-full focus:border-green-500 focus:ring-green-500" :value="old('age', $user->age)"
-                            readonly />
-                        <x-input-error class="mt-2" :messages="$errors->get('age')" />
-                    </div>
-
-                    <div>
-                        <x-input-label for="sex" :value="__('Sex')" class="text-green-800" />
-                        <select id="sex" name="sex"
-                            class="mt-1 block w-full rounded-md border-gray-300 focus:border-green-500 focus:ring-green-500">
-                            <option value="" {{ old('sex', $user->sex) == '' ? 'selected' : '' }}>
-                                Select...</option>
-                            <option value="male" {{ old('sex', $user->sex) == 'male' ? 'selected' : '' }}>Male
-                            </option>
-                            <option value="female" {{ old('sex', $user->sex) == 'female' ? 'selected' : '' }}>Female
-                            </option>
-                            <option value="other" {{ old('sex', $user->sex) == 'other' ? 'selected' : '' }}>Other
-                            </option>
-                        </select>
-                        <x-input-error class="mt-2" :messages="$errors->get('sex')" />
-                    </div>
-
-                    <div>
-                        <x-input-label for="civil_status" :value="__('Civil Status')" class="text-green-800" />
-                        <select id="civil_status" name="civil_status"
-                            class="mt-1 block w-full rounded-md border-gray-300 focus:border-green-500 focus:ring-green-500">
-                            <option value="">Select Civil Status</option>
-                            <option value="Single"
-                                {{ old('civil_status', $user->civil_status) == 'Single' ? 'selected' : '' }}>Single
-                            </option>
-                            <option value="Married"
-                                {{ old('civil_status', $user->civil_status) == 'Married' ? 'selected' : '' }}>Married
-                            </option>
-                            <option value="Divorced"
-                                {{ old('civil_status', $user->civil_status) == 'Divorced' ? 'selected' : '' }}>Divorced
-                            </option>
-                            <option value="Widowed"
-                                {{ old('civil_status', $user->civil_status) == 'Widowed' ? 'selected' : '' }}>Widowed
-                            </option>
-                        </select>
-                        <x-input-error class="mt-2" :messages="$errors->get('civil_status')" />
-                    </div>
-                </div>
-            </div>
-
-            <!-- Additional Information -->
-            <div class="bg-white p-4 rounded-lg shadow-sm border border-green-100">
-                <h3 class="font-medium text-green-700 mb-4 border-b border-green-100 pb-2">Additional Information</h3>
-
-                <div class="space-y-4">
-                    <div>
-                        <x-input-label for="citizenship" :value="__('Citizenship')" class="text-green-800" />
-                        <x-text-input id="citizenship" name="citizenship" type="text"
-                            class="mt-1 block w-full focus:border-green-500 focus:ring-green-500" :value="old('citizenship', $user->citizenship)" />
-                        <x-input-error class="mt-2" :messages="$errors->get('citizenship')" />
-                    </div>
-
-                    <div>
-                        <x-input-label for="place_of_birth" :value="__('Place of Birth')" class="text-green-800" />
-                        <x-text-input id="place_of_birth" name="place_of_birth" type="text"
-                            class="mt-1 block w-full focus:border-green-500 focus:ring-green-500" :value="old('place_of_birth', $user->place_of_birth)" />
-                        <x-input-error class="mt-2" :messages="$errors->get('place_of_birth')" />
-                    </div>
-
-                    <div>
-                        <x-input-label for="blood_type" :value="__('Blood Type')" class="text-green-800" />
-                        <select id="blood_type" name="blood_type"
-                            class="mt-1 block w-full rounded-md border-gray-300 focus:border-green-500 focus:ring-green-500">
-                            <option value="">Select Blood Type</option>
-                            @foreach (['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] as $bloodType)
-                                <option value="{{ $bloodType }}"
-                                    {{ old('blood_type', $user->blood_type) == $bloodType ? 'selected' : '' }}>
-                                    {{ $bloodType }}</option>
-                            @endforeach
-                        </select>
-                        <x-input-error class="mt-2" :messages="$errors->get('blood_type')" />
-                    </div>
-
-                    <div>
-                        <x-input-label for="religion" :value="__('Religion')" class="text-green-800" />
-                        <x-text-input id="religion" name="religion" type="text"
-                            class="mt-1 block w-full focus:border-green-500 focus:ring-green-500" :value="old('religion', $user->religion)" />
-                        <x-input-error class="mt-2" :messages="$errors->get('religion')" />
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Third Row Spanning Full Width -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
-            <!-- Family Information -->
-            <div class="bg-white p-4 rounded-lg shadow-sm border border-green-100">
-                <h3 class="font-medium text-green-700 mb-4 border-b border-green-100 pb-2">Family Information</h3>
-
-                <div class="space-y-4">
-                    <div>
-                        <x-input-label for="birth_order" :value="__('Birth Order')" class="text-green-800" />
-                        <x-text-input id="birth_order" name="birth_order" type="number" min="0"
-                            class="mt-1 block w-full focus:border-green-500 focus:ring-green-500" :value="old('birth_order', $user->birth_order)" />
-                        <x-input-error class="mt-2" :messages="$errors->get('birth_order')" />
-                    </div>
-
-                    <div>
-                        <x-input-label for="no_of_siblings" :value="__('Number of Siblings')" class="text-green-800" />
-                        <x-text-input id="no_of_siblings" name="no_of_siblings" type="number" min="0"
-                            class="mt-1 block w-full focus:border-green-500 focus:ring-green-500" :value="old('no_of_siblings', $user->no_of_siblings)" />
-                        <x-input-error class="mt-2" :messages="$errors->get('no_of_siblings')" />
-                    </div>
-                </div>
-            </div>
-
-            <!-- Account Information (Read-only) -->
-            <div class="bg-white p-4 rounded-lg shadow-sm border border-green-100">
-                <h3 class="font-medium text-green-700 mb-4 border-b border-green-100 pb-2">Account Information</h3>
-
-                <div class="space-y-4">
-                    <div>
-                        <x-input-label for="status" :value="__('Account Status')" class="text-green-800" />
-                        <div class="mt-1 p-2 bg-gray-50 rounded border border-gray-200">
-                            <span
-                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $user->status == 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                {{ $user->status ?? 'N/A' }}
-                            </span>
-                        </div>
-                    </div>
-
-                    <div>
-                        <x-input-label for="role" :value="__('User Role')" class="text-green-800" />
-                        <div class="mt-1 p-2 bg-gray-50 rounded border border-gray-200">
-                            {{ $user->role->role_name ?? 'N/A' }}
-                        </div>
-                    </div>
-
-                    <div>
-                        <x-input-label for="created_at" :value="__('Created On')" class="text-green-800" />
-                        <div class="mt-1 p-2 bg-gray-50 rounded border border-gray-200">
-                            {{ $user->created_at ? $user->created_at->format('F d, Y h:i A') : 'N/A' }}
-                        </div>
-                    </div>
-
-                    <div>
-                        <x-input-label for="last_login" :value="__('Last Login')" class="text-green-800" />
-                        <div class="mt-1 p-2 bg-gray-50 rounded border border-gray-200">
-                            {{ $user->last_login ? \Carbon\Carbon::parse($user->last_login)->format('F d, Y h:i A') : 'N/A' }}
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -309,34 +141,6 @@
     </form>
 
     <script>
-        // Auto-calculate age based on date of birth
-        document.addEventListener('DOMContentLoaded', function() {
-            const dobInput = document.getElementById('date_of_birth');
-            const ageInput = document.getElementById('age');
-
-            function calculateAge() {
-                if (dobInput.value) {
-                    const dob = new Date(dobInput.value);
-                    const today = new Date();
-                    let age = today.getFullYear() - dob.getFullYear();
-                    const monthDiff = today.getMonth() - dob.getMonth();
-
-                    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
-                        age--;
-                    }
-
-                    ageInput.value = age;
-                }
-            }
-
-            // Calculate on page load
-            calculateAge();
-
-            // Calculate when date of birth changes
-            dobInput.addEventListener('change', calculateAge);
-        });
-    </script>
-    <script>
         // Profile picture preview
         document.addEventListener('DOMContentLoaded', function() {
             const profilePicInput = document.getElementById('profile_picture');
@@ -348,13 +152,12 @@
                     const reader = new FileReader();
                     reader.onload = function(e) {
                         profilePreview.src = e.target.result;
-                        profilePreview.classList.add('ring-2', 'ring-green-400'); // Add visual feedback
+                        profilePreview.classList.add('ring-2', 'ring-green-400');
                     }
                     reader.readAsDataURL(file);
                 }
             });
 
-            // Optional: Add hover effect
             profilePreview.parentElement.addEventListener('mouseenter', function() {
                 this.querySelector('svg').classList.add('scale-110');
             });

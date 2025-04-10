@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Role;
 use App\Services\AuditLogService;
 use App\Models\AuditLog;
+use App\Enums\ExtensionName;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 
 
 class UserController extends Controller
@@ -159,25 +162,9 @@ class UserController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
-            'extension_name' => 'nullable|string|max:255',
+            'extension_name' => ['nullable', 'string', 'in:' . implode(',', ExtensionName::values())],
             'email' => 'required|email|unique:tbl_users,email,' . $user->user_id . ',user_id',
             'contact_number' => 'nullable|string|max:20',
-            'date_of_birth' => [
-                'nullable',
-                'date',
-                'date_format:Y-m-d', // Enforce format
-                'before:today' // Optional validation
-            ],
-            'age' => 'nullable|integer|min:0',
-            'place_of_birth' => 'nullable|string|max:255',
-            'sex' => 'nullable|in:male,female,other',
-            'civil_status' => 'nullable|in:Single,Married,Divorced,Widowed',
-            'address' => 'nullable|string',
-            'citizenship' => 'nullable|string|max:255',
-            'blood_type' => 'nullable|string|max:5',
-            'religion' => 'nullable|string|max:255',
-            'birth_order' => 'nullable|integer|min:0',
-            'no_of_siblings' => 'nullable|integer|min:0',
             'status' => 'required|in:active,inactive',
             'role_id' => 'required|exists:tbl_roles,role_id',
         ]);
@@ -241,7 +228,7 @@ class UserController extends Controller
             );
         }
 
-        // Redirect to the users index with a success message
+        // Redirect to the users dashboard with a success message
         return redirect()->route('users.show', $user);
     }
 
@@ -260,30 +247,26 @@ class UserController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
-            'extension_name' => 'nullable|string|max:255',
+            'extension_name' => ['nullable', 'string', 'in:' . implode(',', ExtensionName::values())],
             'email' => 'required|email|unique:tbl_users,email',
-            'password' => 'required|string|min:8|confirmed',
             'contact_number' => 'nullable|string|max:20',
-            'date_of_birth' => 'nullable|date',
-            'age' => 'nullable|integer|min:0',
-            'place_of_birth' => 'nullable|string|max:255',
-            'sex' => 'nullable|in:male,female,other',
-            'civil_status' => 'nullable|in:Single,Married,Divorced,Widowed',
-            'address' => 'nullable|string',
-            'citizenship' => 'nullable|string|max:255',
-            'blood_type' => 'nullable|string|max:5',
-            'religion' => 'nullable|string|max:255',
-            'birth_order' => 'nullable|integer|min:0',
-            'no_of_siblings' => 'nullable|integer|min:0',
             'status' => 'required|in:active,inactive',
             'role_id' => 'required|exists:tbl_roles,role_id',
         ]);
 
-        // Hash the password
-        $validatedData['password'] = Hash::make($validatedData['password']);
+        // Create user with random password
+        $user = User::create(array_merge($validatedData, [
+            'password' => Hash::make(Str::random(40))
+        ]));
 
-        // Create the new user
-        $user = User::create($validatedData);
+        // Send password reset notification
+        $status = Password::sendResetLink(
+            ['email' => $user->email]
+        );
+
+        if ($status !== Password::RESET_LINK_SENT) {
+            return back()->withErrors(['email' => __($status)]);
+        }
 
         // Get role name for the audit log
         $roleName = Role::find($validatedData['role_id'])->role_name;
