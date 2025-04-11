@@ -264,6 +264,7 @@ class UserController extends Controller
             ['email' => $user->email]
         );
 
+        //Send reset password email
         if ($status !== Password::RESET_LINK_SENT) {
             return back()->withErrors(['email' => __($status)]);
         }
